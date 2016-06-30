@@ -5,6 +5,8 @@
 #include <sstream>
 #include <vector>
 #include <stdexcept>
+#include <algorithm>
+#include <memory>
 
 namespace CObjectGraph
 {

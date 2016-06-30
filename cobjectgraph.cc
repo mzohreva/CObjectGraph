@@ -40,9 +40,9 @@ string Edge::ToDot()
 
 BaseNode * Graph::FindNodeForObject(const void * object)
 {
-    for (int i = 0; i < nodes.size(); i++)
-        if (nodes[i]->RepresentsObject(object))
-            return nodes[i].get();
+    for (const auto& node : nodes)
+        if (node->RepresentsObject(object))
+            return node.get();
     return nullptr;
 }
 
