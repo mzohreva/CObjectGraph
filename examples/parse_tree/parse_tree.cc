@@ -14,9 +14,9 @@ namespace CObjectGraph {
     {
         char c = *object;
         if (c > ' ')
-            ss << c;
+            oss << c;
         else
-            ss << "ASCII " << (int) c;
+            oss << "ASCII " << (int) c;
     }
 
     COG_DEFINE_NODE(int);
@@ -24,7 +24,7 @@ namespace CObjectGraph {
     COG_WRITE_NODE_LABEL(int)
     {
         int x = *object;
-        ss << x;
+        oss << x;
     }
 
 
@@ -32,7 +32,7 @@ namespace CObjectGraph {
 
     COG_WRITE_NODE_LABEL(struct ExprNode)
     {
-        ss << "expr";
+        oss << "expr";
     }
 
     COG_ADD_RELATED_OBJECTS(struct ExprNode)
@@ -56,7 +56,7 @@ namespace CObjectGraph {
 
     COG_WRITE_NODE_LABEL(struct TermNode)
     {
-        ss << "term";
+        oss << "term";
     }
 
     COG_ADD_RELATED_OBJECTS(struct TermNode)
@@ -80,7 +80,7 @@ namespace CObjectGraph {
 
     COG_WRITE_NODE_LABEL(struct FactorNode)
     {
-        ss << "factor";
+        oss << "factor";
     }
 
     COG_ADD_RELATED_OBJECTS(struct FactorNode)

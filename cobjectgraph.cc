@@ -10,9 +10,9 @@ int BaseNode::counter = 1;
 
 BaseNode::BaseNode()
 {
-    stringstream ss;
-    ss << "node" << BaseNode::counter++;
-    this->name = ss.str();
+    ostringstream oss;
+    oss << "node" << BaseNode::counter++;
+    this->name = oss.str();
 }
 
 string BaseNode::GetName() const
@@ -30,11 +30,11 @@ Edge::Edge(BaseNode * from, BaseNode * to, string label)
 
 string Edge::ToDot()
 {
-    stringstream ss;
-    ss << this->from->GetName();
-    ss << " -> " << this->to->GetName();
-    ss << " [label=\"" << this->label << "\"]";
-    return ss.str();
+    ostringstream oss;
+    oss << this->from->GetName();
+    oss << " -> " << this->to->GetName();
+    oss << " [label=\"" << this->label << "\"]";
+    return oss.str();
 }
 
 

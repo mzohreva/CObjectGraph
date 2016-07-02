@@ -11,8 +11,8 @@ namespace CObjectGraph {
 
     COG_WRITE_NODE_LABEL(ListNode)
     {
-        ss << "str: '" << object->str << "'\\l";
-        ss << "x: " << object->x << "\\l";
+        oss << "str: '" << object->str << "'\\l";
+        oss << "x: " << object->x << "\\l";
     }
 
     COG_ADD_RELATED_OBJECTS(ListNode)
@@ -33,7 +33,7 @@ namespace CObjectGraph {
 
     COG_WRITE_NODE_LABEL(ListNode *)
     {
-        ss << var_name;
+        oss << var_name;
     }
 
     COG_ADD_RELATED_OBJECTS(ListNode *)

@@ -33,9 +33,9 @@ namespace CObjectGraph
             std::string ToDot() const
             {
                 if (!set) throw std::logic_error("You should set the position first!");
-                std::stringstream ss;
-                ss << x << "," << y;
-                return ss.str();
+                std::ostringstream oss;
+                oss << x << "," << y;
+                return oss.str();
             }
 
         private:
@@ -110,17 +110,17 @@ namespace CObjectGraph
 
             std::string ToDot() override
             {
-                std::stringstream ss;
-                ss << this->GetName() << " [label=\"";
-                (object == nullptr) ? WriteNullNodeLabel(ss) : WriteNodeLabel(ss);
-                ss << "\"";
+                std::ostringstream oss;
+                oss << this->GetName() << " [label=\"";
+                (object == nullptr) ? WriteNullNodeLabel(oss) : WriteNodeLabel(oss);
+                oss << "\"";
 
-                if (pos.IsSet()) ss << ", pos=\"" << pos.ToDot() << "\"";
+                if (pos.IsSet()) oss << ", pos=\"" << pos.ToDot() << "\"";
 
                 for (const auto& a : attributes)
-                    ss << ", " << a.key << "=\"" << a.value << "\"";
-                ss << "]";
-                return ss.str();
+                    oss << ", " << a.key << "=\"" << a.value << "\"";
+                oss << "]";
+                return oss.str();
             }
 
             void SetAttribute(std::string key, std::string value) override
@@ -152,14 +152,14 @@ namespace CObjectGraph
                 // Default implementation does nothing
             }
 
-            void WriteNodeLabel(std::stringstream& ss)
+            void WriteNodeLabel(std::ostringstream& oss)
             {
-                ss << type_name;
+                oss << type_name;
             }
 
-            void WriteNullNodeLabel(std::stringstream& ss)
+            void WriteNullNodeLabel(std::ostringstream& oss)
             {
-                ss << "null";
+                oss << "null";
             }
     };
 
@@ -236,10 +236,10 @@ template <> const char* CObjectGraph::Node<T>::type_name = #T;
 template <> void CObjectGraph::Node<T>::SetNodeAttributes()
 
 #define COG_WRITE_NODE_LABEL(T) \
-template <> void CObjectGraph::Node<T>::WriteNodeLabel(std::stringstream& ss)
+template <> void CObjectGraph::Node<T>::WriteNodeLabel(std::ostringstream& oss)
 
 #define COG_WRITE_NULL_NODE_LABEL(T) \
-template <> void CObjectGraph::Node<T>::WriteNullNodeLabel(std::stringstream& ss)
+template <> void CObjectGraph::Node<T>::WriteNullNodeLabel(std::ostringstream& oss)
 
 #define COG_ADD_RELATED_OBJECTS(T) \
 template <> void CObjectGraph::Node<T>::AddRelatedObjects(CObjectGraph::Graph * graph)
