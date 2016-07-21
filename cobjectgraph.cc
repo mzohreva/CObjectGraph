@@ -100,53 +100,53 @@ void Graph::SetAttribute(AttributeScope scope, std::string key, std::string valu
     set_attribute(attributes, key, value, scope);
 }
 
-void Graph::PrintDot()
+void Graph::PrintDot(std::ostream& os)
 {
-    cout << "digraph " << title << " {\n";
+    os << "digraph " << title << " {\n";
     // Print attributes
     for (const auto& a : attributes)
     {
         switch (a.scope)
         {
             case AttributeScope::GRAPH:
-                cout << "    " << a.key << " = " << "\"" << a.value << "\";\n";
+                os << "    " << a.key << " = " << "\"" << a.value << "\";\n";
                 break;
 
             case AttributeScope::ALL_NODES:
-                cout << "    node [ " << a.key << " = " << "\"" << a.value << "\" ]\n";
+                os << "    node [ " << a.key << " = " << "\"" << a.value << "\" ]\n";
                 break;
 
             case AttributeScope::ALL_EDGES:
-                cout << "    edge [ " << a.key << " = " << "\"" << a.value << "\" ]\n";
+                os << "    edge [ " << a.key << " = " << "\"" << a.value << "\" ]\n";
                 break;
 
             case AttributeScope::SPECIFIC_NODE:
                 throw runtime_error("Node-specific attibute in Graph!");
         }
     }
-    cout << "\n";
+    os << "\n";
     // Print nodes
     for (const auto& n : nodes)
     {
-        cout << "    " << n->ToDot() << "\n";
+        os << "    " << n->ToDot() << "\n";
     }
-    cout << "\n";
+    os << "\n";
     // Print rankings
     for (const auto& r : rankings)
     {
-        cout << "    { rank=same; ";
+        os << "    { rank=same; ";
         for (const auto& n : r)
         {
-            cout << n->GetName() << " ";
+            os << n->GetName() << " ";
         }
-        cout << " }\n";
+        os << " }\n";
     }
-    cout << "\n";
+    os << "\n";
     // Print edges
     for (const auto& e : edges)
     {
-        cout << "    " << e->ToDot() << "\n";
+        os << "    " << e->ToDot() << "\n";
     }
-    cout << "}\n";
+    os << "}\n";
 }
 

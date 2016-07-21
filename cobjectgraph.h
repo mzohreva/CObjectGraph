@@ -196,7 +196,7 @@ namespace CObjectGraph
             void SetSameRankByNode(BaseNode * obj1Node, BaseNode * obj2Node);
             void SetSameRank(const void* obj1, const void* obj2);
             void SetAttribute(AttributeScope scope, std::string key, std::string value);
-            void PrintDot();
+            void PrintDot(std::ostream& os = std::cout);
 
         private:
             std::string title;
