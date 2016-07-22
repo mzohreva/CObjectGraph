@@ -166,19 +166,20 @@ namespace CObjectGraph
     class Edge
     {
         public:
-            Edge(BaseNode * from, BaseNode * to, std::string label);
+            Edge(const BaseNode * from, const BaseNode * to, std::string label);
             std::string ToDot();
 
         private:
-            BaseNode * from;
-            BaseNode * to;
+            const BaseNode * from;
+            const BaseNode * to;
             std::string label;
     };
 
     class Graph
     {
         public:
-            explicit Graph(std::string title_ = "G") : title{title_} { }
+            explicit Graph(std::string title_ = "G", bool separate_node_for_each_null_object_ = false)
+                : title{title_}, separate_node_for_each_null_object{separate_node_for_each_null_object_} { }
 
             template <typename T>
             BaseNode * AddNode(const T* object, std::string var_name = "")
@@ -193,23 +194,25 @@ namespace CObjectGraph
             }
 
             void AddEdge(const void * from, const void * to, std::string label);
-            void SetSameRankByNode(BaseNode * obj1Node, BaseNode * obj2Node);
+            void AddEdge(const BaseNode * from, const BaseNode * to, std::string label);
+            void SetSameRank(const BaseNode * obj1Node, const BaseNode * obj2Node);
             void SetSameRank(const void* obj1, const void* obj2);
             void SetAttribute(AttributeScope scope, std::string key, std::string value);
             void PrintDot(std::ostream& os = std::cout);
 
         private:
             std::string title;
+            bool separate_node_for_each_null_object;
             std::vector< std::unique_ptr< BaseNode > > nodes;
             std::vector< std::unique_ptr< Edge > > edges;
             std::vector< Attribute > attributes;
-            std::vector< std::vector< BaseNode * > > rankings;
+            std::vector< std::vector< const BaseNode * > > rankings;
 
             template <typename T>
             BaseNode * AddNodeIfNotFound(const T* object, bool set_pos, int x, int y, std::string var_name)
             {
                 BaseNode * node = FindNodeForObject(object);
-                if (node == nullptr)
+                if (node == nullptr || (object == nullptr && separate_node_for_each_null_object))
                 {
                     Node<T> * new_node = new Node<T>(object, var_name);
                     nodes.push_back(std::unique_ptr<BaseNode>(new_node));

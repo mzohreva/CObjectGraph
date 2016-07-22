@@ -21,7 +21,7 @@ string BaseNode::GetName() const
 }
 
 
-Edge::Edge(BaseNode * from, BaseNode * to, string label)
+Edge::Edge(const BaseNode * from, const BaseNode * to, string label)
 {
     this->from = from;
     this->to = to;
@@ -46,10 +46,24 @@ BaseNode * Graph::FindNodeForObject(const void * object)
     return nullptr;
 }
 
+void Graph::AddEdge(const BaseNode * from, const BaseNode * to, string label)
+{
+    if (from == nullptr)
+    {
+        throw runtime_error("from cannot be null");
+    }
+    if (to == nullptr)
+    {
+        throw runtime_error("to cannot be null");
+    }
+    Edge * e = new Edge(from , to, label);
+    edges.push_back(unique_ptr<Edge>(e));
+}
+
 void Graph::AddEdge(const void * fromObject, const void * toObject, string label)
 {
-    BaseNode * from = FindNodeForObject(fromObject);
-    BaseNode * to   = FindNodeForObject(toObject);
+    const BaseNode * from = FindNodeForObject(fromObject);
+    const BaseNode * to   = FindNodeForObject(toObject);
     if (from == nullptr)
     {
         throw runtime_error("Could not find the node for fromObject");
@@ -58,13 +72,12 @@ void Graph::AddEdge(const void * fromObject, const void * toObject, string label
     {
         throw runtime_error("Could not find the node for toObject");
     }
-    Edge * e = new Edge(from , to, label);
-    edges.push_back(unique_ptr<Edge>(e));
+    AddEdge(from, to, label);
 }
 
-void Graph::SetSameRankByNode(BaseNode * obj1Node, BaseNode * obj2Node)
+void Graph::SetSameRank(const BaseNode * obj1Node, const BaseNode * obj2Node)
 {
-    vector< BaseNode * > s;
+    vector< const BaseNode * > s;
     if (obj1Node == nullptr)
     {
         throw runtime_error("obj1Node cannot be null");
@@ -90,7 +103,7 @@ void Graph::SetSameRank(const void* obj1, const void* obj2)
     {
         throw runtime_error("Could not find the node for obj2");
     }
-    SetSameRankByNode(obj1Node, obj2Node);
+    SetSameRank(obj1Node, obj2Node);
 }
 
 void Graph::SetAttribute(AttributeScope scope, std::string key, std::string value)

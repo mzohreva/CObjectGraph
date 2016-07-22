@@ -17,9 +17,9 @@ namespace CObjectGraph {
 
     COG_ADD_RELATED_OBJECTS(ListNode)
     {
-        graph->AddNode(object->next);
-        graph->AddEdge(object, object->next, "next");
-        graph->SetSameRank(object, object->next);
+        auto next_node = graph->AddNode(object->next);
+        graph->AddEdge(this, next_node, "next");
+        graph->SetSameRank(this, next_node);
     }
 
     COG_SET_NODE_ATTRIBUTES(ListNode)
@@ -38,8 +38,8 @@ namespace CObjectGraph {
 
     COG_ADD_RELATED_OBJECTS(ListNode *)
     {
-        graph->AddNode(*object);
-        graph->AddEdge(object, *object, "");
+        auto obj_node = graph->AddNode(*object);
+        graph->AddEdge(this, obj_node, "");
     }
 
     COG_SET_NODE_ATTRIBUTES(ListNode *)
@@ -55,7 +55,7 @@ int main()
     list.AddToHead("Flagstaff", 85);
     list.AddToTail("Los Angeles", 90);
 
-    Graph g;
+    Graph g("", true);
 
     g.SetAttribute(AttributeScope::ALL_NODES, "shape", "box");
     g.SetAttribute(AttributeScope::ALL_NODES, "fontname", "Courier New");
